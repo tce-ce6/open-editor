@@ -1,0 +1,62 @@
+body{
+    overflow: hidden;
+    font-family:sans-serif;
+}
+
+.root{
+    overflow-y: auto;
+    height: 91.2%;
+    position: absolute;
+    width: 99.8%;
+    top: 50px;
+    background: #ececec;
+    left: 0;
+    border: 1px dashed lightgray;
+}
+#toolbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 99%;
+    height: 37px;
+    padding: 6px;
+    text-align: right;
+    // background: #ececec;
+    box-shadow: 0 0 0.1cm rgb(0 0 0 / 50%);
+}
+.btn{ 
+    right: 0px;
+    position: relative;
+    margin: 3px;
+    display: inline-block;
+    height:30px;
+    
+}
+
+
+@media print {
+    body{
+        font-family:sans-serif;
+    }
+}
+
+    .page {
+        background: white;
+        display: block;
+        margin: 40px auto;
+        box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+        box-sizing: border-box;
+        transition: all 0.2s ease;
+    }
+    .page .content {
+        overflow: auto;
+        outline: 0;
+        font-family:sans-serif;
+    }
+
+    @media print{
+        .noprint{
+            display:none;
+        }
+     }

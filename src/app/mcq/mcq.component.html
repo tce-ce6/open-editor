@@ -1,0 +1,42 @@
+
+<div id="myMcq" class="mcq-view">
+    <button type="button" contenteditable="false" class="toggleBtn mcqBtn noprint" (click)="layout()">toggle layout</button> 
+    <div id="qtext">{{item}}</div>   
+    <div class="mcq-option" [ngClass]="!isToggle ? 'mcqLayout1' : 'mcqLayout2'">
+        <input class="cbox" type="checkbox" id="html"  value="HTML">
+        <label>transistor</label>
+    </div>
+    <div class="mcq-option" [ngClass]="!isToggle ? 'mcqLayout1' : 'mcqLayout2'">
+        <input class="cbox" type="checkbox" id="html"  value="HTML">
+        <label>diode</label>
+    </div>
+    <div class="mcq-option" [ngClass]="!isToggle ? 'mcqLayout1' : 'mcqLayout2'">
+        <input class="cbox" type="checkbox" id="html"  value="HTML">
+        <label>capacitor</label>
+    </div>
+   <br>
+   <button class="mcqBtn noprint" contenteditable="false" type="button" (click)="onSubmit()">submit</button>
+   </div>
+   <br>
+
+<!-- 
+   
+<div id="myMcq" class="mcq-view">
+    <button type="button" contenteditable="false" class="toggleBtn mcqBtn" (click)="layout()">toggle layout</button> 
+    <div id="qtext">{{item}}</div>   
+    <div class="mcq-option" [ngClass]="!isToggle ? 'mcqLayout1' : 'mcqLayout2'">
+        <input class="cbox" type="checkbox" id="html"  value="HTML">
+        <label>transistor</label>
+    </div>
+    <div class="mcq-option" [ngClass]="!isToggle ? 'mcqLayout1' : 'mcqLayout2'">
+        <input class="cbox" type="checkbox" id="html"  value="HTML">
+        <label>diode</label>
+    </div>
+    <div class="mcq-option" [ngClass]="!isToggle ? 'mcqLayout1' : 'mcqLayout2'">
+        <input class="cbox" type="checkbox" id="html"  value="HTML">
+        <label>capacitor</label>
+    </div>
+   <br>
+   <button class="mcqBtn" contenteditable="false" type="button" (click)="onSubmit()">submit</button>
+   </div>
+    -->

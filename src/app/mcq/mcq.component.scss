@@ -1,0 +1,32 @@
+.mcq-view{
+    position: relative;
+    margin: 0px;
+    transition: all 0.5s ease;
+}
+
+#qtext{
+    margin:5px;
+}
+.mcqBtn{
+    user-select: none;
+    cursor: pointer;
+}
+.cbox{
+    cursor: pointer;
+}
+.mcq-option{
+    position: relative;
+    margin: 5px;
+}
+.mcqLayout1{
+    display: inline-block;
+}
+.mcqLayout2{
+    display: block;
+}
+.toggleBtn{
+    position: absolute;
+    right: 0;
+    border: 0;
+    background: orange;
+}

@@ -1,0 +1,39 @@
+
+  
+<div id="toolbar">
+  
+  <button class="btn" type="button" (click)="insertTemplate()">Insert Question</button>
+  <button class="btn" type="button" (click)="insertPagebreak()">Insert Page Break</button>
+  <button class="btn" type="button" (click)="doPrint()">print</button>
+  <button class="btn" type="button" (click)="pageSize('a4')">A4</button>
+  <button class="btn" type="button" (click)="pageSize('a5')">A5</button>
+</div>
+  
+<ng-container  #feedbackModal></ng-container>
+<div class="root">
+<div [id]="'page-' + i" class="page" *ngFor="let page of pages; index as i"
+  [style.height]="sizePage.height + 'cm'"
+  [style.width]="sizePage.width + 'cm'"
+  (click)="clickPage(i)">
+  <!-- <button type="button" (click)="removePage(i)">remove</button> -->
+    <div class="content" 
+      [style.paddingTop]="paddingPage.top + 'cm'"
+      [style.paddingRight]="paddingPage.right + 'cm'"
+      [style.paddingBottom]="paddingPage.bottom + 'cm'"
+      [style.paddingLeft]="paddingPage.left + 'cm'"  
+      [id]="'content-' + i" contenteditable="true"
+      (keypress)="inputContent($event, $event['data'], i)"
+      (input)="inputContent($event, $event['data'], i)">
+      
+       <!-- <app-qptitle></app-qptitle>   -->
+      <br>
+      <!-- <app-mcq [item]="question1"></app-mcq> -->
+      <!-- 
+          <p class='pgbreak' style="page-break-after: always;">----------page break-----------</p>  
+      -->
+      <br>
+      
+    </div>
+</div>
+</div>
+

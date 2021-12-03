@@ -1,0 +1,24 @@
+.qp-qsnpaper-listing {
+    // padding: 10px;
+    margin: 0;
+}
+.qp-qsnpaper-listing .item {
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 10px;
+    padding: 15px;
+}
+.justify-content-between {
+    justify-content: space-between!important;
+}
+
+textarea.form-control {
+    border: none!important;
+    padding: 5px 1px 0;
+    margin: 4px 0;
+    font-family: Quicksand;
+    font-weight: 700;
+    font-size: 15px;
+}
+textarea.form-control {
+    min-height: calc(1.5em + 0.75rem + 2px);
+}
