@@ -1,7 +1,11 @@
 
   
-<div id="toolbar">
-  
+<div class="toolbar">
+  <div class="toolbarPanel"></div>
+  <div class="slidecontainer">
+     {{pageScaleDisplay}}<input type="range" min="0.5" max="1.5" [value]="pageScale" step="0.1" class="slider" id="myRange" (change)="updateSlider($event)">
+  </div>
+  <button class="btn" type="button" (click)="fitPageWidth()">Fit Page Width</button>
   <button class="btn" type="button" (click)="insertTemplate()">Insert Question</button>
   <button class="btn" type="button" (click)="insertPagebreak()">Insert Page Break</button>
   <button class="btn" type="button" (click)="doPrint()">print</button>
@@ -11,10 +15,12 @@
   
 <ng-container  #feedbackModal></ng-container>
 <div class="root">
+<div class="pageroot" id="pageroot" [style.width]="sizePage.width+1 + 'cm'">
+
 <div [id]="'page-' + i" class="page" *ngFor="let page of pages; index as i"
   [style.height]="sizePage.height + 'cm'"
   [style.width]="sizePage.width + 'cm'"
-  (click)="clickPage(i)">
+  (tap)="clickPage(i)">
   <!-- <button type="button" (click)="removePage(i)">remove</button> -->
     <div class="content" 
       [style.paddingTop]="paddingPage.top + 'cm'"
@@ -23,9 +29,10 @@
       [style.paddingLeft]="paddingPage.left + 'cm'"  
       [id]="'content-' + i" contenteditable="true"
       (keypress)="inputContent($event, $event['data'], i)"
-      (input)="inputContent($event, $event['data'], i)">
+      (input)="inputContent($event, $event['data'], i)"
+      (click)="contentOnClick($event)">
       
-       <!-- <app-qptitle></app-qptitle>   -->
+        <!-- <app-qptitle></app-qptitle>    -->
       <br>
       <!-- <app-mcq [item]="question1"></app-mcq> -->
       <!-- 
@@ -33,6 +40,7 @@
       -->
       <br>
       
+    </div>
     </div>
 </div>
 </div>

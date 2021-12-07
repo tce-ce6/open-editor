@@ -33,6 +33,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   currentPage = 0;
   currentChar = null;
   runAfterViewChecked = false;
+  currentYPos = 0;
+  appliedPageBreak = false;
+  pageScaleDisplay: any;
+  pageScale = 1;
+  isFitPage = false;
+
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
     private renderer: Renderer2
@@ -43,7 +49,30 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void{
-    // console.log('init');
+    window.addEventListener('resize', this.onResize.bind(this));
+  }
+  onResize(): void{
+    if (this.isFitPage){
+      this.fitPageWidth();
+    }
+  }
+  updateSlider(e): void{
+    this.isFitPage = false;
+    this.pageScale = e.target.value;
+    this.doZoom();
+  }
+
+  fitPageWidth(): void{
+    this.isFitPage = true;
+    const elm = document.getElementById('pageroot');
+    this.pageScale = 1 / Math.min(elm.clientWidth / window.innerWidth, elm.clientHeight / window.innerHeight);
+    this.doZoom();
+  }
+
+  doZoom(): void{
+    const pgRoot = document.getElementById('pageroot');
+    // this.pageScaleDisplay = this.pageScale.toFixed(4);
+    pgRoot.style.transform = 'scale(' + this.pageScale + ')';
   }
 
   pageSize(size: any): void{
@@ -65,12 +94,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
     const mywindow: any = window.open('', 'PRINT');
     mywindow.document.write('<html><head><title></title>');
-    mywindow.document.write("<style type='text/css'>.content{font-family:sans-serif;margin: 0px auto;}mcq-view{position: relative;margin: 0px;transition: all 0.5s ease;}#qtext{margin:5px;}.mcqBtn{user-select: none;cursor: pointer;}.cbox{cursor: pointer;}.mcq-option{position: relative;margin: 5px;}.mcqLayout1{display: inline-block;}.mcqLayout2{display: block;}.toggleBtn{position: absolute;right: 0;border: 0;background: orange;} .noprint{ display:none;}</style>");
-    //mywindow.document.write('<link rel="stylesheet" href="./assets/print.css" type="text/css" />');
-    //mywindow.document.write( "<link rel=\"stylesheet\" href=\"./assets/print.css\" type=\"text/css\"/>" );
-    mywindow.document.write('</head><body >');
-    mywindow.document.write(printContents);
-    mywindow.document.write('</body></html>');
+    mywindow.document.write('<style type=\'text/css\'>.content{font-family:sans-serif;margin: 0px auto;}mcq-view{position: relative;margin: 0px;transition: all 0.5s ease;}#qtext{margin:5px;}.mcqBtn{user-select: none;cursor: pointer;}.cbox{cursor: pointer;}.mcq-option{position: relative;margin: 5px;}.mcqLayout1{display: inline-block;}.mcqLayout2{display: block;}.toggleBtn{position: absolute;right: 0;border: 0;background: orange;} .noprint{ display:none;}</style>');
+    // mywindow.document.write( '<link rel=\'stylesheet\' href=\'./assets/print.css\' type=\'text/css\' />' );
+    mywindow.document.write('</head><body>' + printContents + '</body></html>');
     mywindow.document.close();
     mywindow.focus();
     mywindow.print();
@@ -78,7 +104,10 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   clickPage(i: any): void {
+    console.log('clickPage');
     this.currentPage = i;
+    const element = document.getElementById('content-' + i);
+    element.setAttribute('contenteditable', 'true');
   }
   removePage(i: any): void{
     const ele  =  document.getElementById('page-' + i);
@@ -86,37 +115,57 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.pages.splice(i);
   }
   insertPagebreak(): void{
-    console.log('this.currentPage', this.currentPage);
     const ele  =  document.getElementById('content-' + this.currentPage);
-    ele.innerHTML += ('<div class="pageBreak" style="color:lightgray; page-break-after: always;">----------page break-----------</div> ');
+    let str = '';
+    str += '<div contenteditable="false" style="page-break-after: always;"> -------</div><br>';
+    //str += '<div style="page-break-before: always;">-------</div>';
+    ele.innerHTML += str;
+    this.appliedPageBreak = true;
+    //this.pages[this.currentPage].full = true;
+      //if (!this.pages[this.currentPage + 1]) 
+      {
+        this.pages.push({
+          htmlContent: null,
+          full: false
+        });
+      }
+      this.currentPage = this.currentPage + 1;
+      //this.runAfterViewChecked = true;
   }
 
   insertTemplate(): void{
-    // const componentFactory2 = this.componentFactoryResolver.resolveComponentFactory(QptitleComponent);
-    // const componentRef2 = this.feedbackModal.createComponent(componentFactory2);
-    // const ele2  =  document.getElementById('content-' + this.currentPage);
-    // this.renderer.appendChild(ele2, componentRef2.location.nativeElement);
-
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(McqComponent);
     const componentRef = this.feedbackModal.createComponent(componentFactory);
-    const ele  =  document.getElementById('content-' + this.currentPage);
-    this.renderer.appendChild(ele, componentRef.location.nativeElement);
+    const pageElement  =  document.getElementById('content-' + this.currentPage);
+
+    const id = 'baby_' + this.getRandomID();
+    const mystr = '<div id=' + id + ' class="baby"></div>';
+    // pageElement.innerHTML += mystr;
+    // const newQuestionEle = document.getElementById(id);
+    this.renderer.appendChild(pageElement, componentRef.location.nativeElement);
+    // newQuestionEle.style.position = 'relative';
+    // newQuestionEle.style.top = this.currentYPos + 'px';
+    // this.renderer.setAttribute(componentRef.location.nativeElement, 'style', 'position:relative; top:' + this.currentYPos + 'px');
+    // insert a line break after component
+    const str = '</br>';
+    //pageElement.innerHTML += str;
+  }
+
+  contentOnClick(e: any): void{
+    console.log("yPos--", e.target.getBoundingClientRect().y);
+    this.currentYPos = e.target.getBoundingClientRect().y;
   }
 
   inputContent(e, char, i): void {
-    // console.log("e--", e.charCode);
+    console.log('this.pages', this.pages);
     const element = document.getElementById('content-' + i);
     if (e.keyCode === 13) {
       // e.preventDefault();
-      // const text = element.innerHTML.replace('<div><br></div>', '');
-      // element.innerHTML = text;
     }
-
+    // console.log("txt--", e.target.innerHTML);
     const heightContent = element.offsetHeight * 2.54 / 96; // Convert pixels to cm
     this.pages[i].htmlContent = element.innerHTML;
-    console.log('--in--', element.innerHTML);
     if (Number(heightContent.toFixed(1)) > this.sizePage.height) {
-      console.log('--in--1');
       this.currentChar = char;
       console.log(char, i);
       this.pages[i].full = true;
@@ -136,7 +185,7 @@ export class AppComponent implements OnInit, AfterViewInit {
       if (this.currentChar) {
         let str = this.pages[this.currentPage - 1].htmlContent;
         const indexLastCloseDiv = str.lastIndexOf('</div>');
-        console.log("--in--1");
+        console.log('--in--1');
         const indexLastBr = str.lastIndexOf('<br>');
         let lastChar = str[indexLastCloseDiv - 1];
         if (indexLastBr !== -1 && (indexLastBr + 4) === indexLastCloseDiv){
@@ -165,5 +214,10 @@ export class AppComponent implements OnInit, AfterViewInit {
       }
       this.runAfterViewChecked = false;
     }
+  }
+
+  // utils
+  getRandomID() {
+    return ( Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
   }
 }
