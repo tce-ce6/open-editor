@@ -2,7 +2,10 @@ body{
     overflow: hidden;
     font-family:sans-serif;
 }
-
+.content{
+    background-color:lightgray;
+    height:auto;
+}
 .root{
     overflow-y: auto;
     overflow-x: hidden;

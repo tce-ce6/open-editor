@@ -137,28 +137,38 @@ export class AppComponent implements OnInit, AfterViewInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(McqComponent);
     const componentRef = this.feedbackModal.createComponent(componentFactory);
     const pageElement  =  document.getElementById('content-' + this.currentPage);
-
+    
     const id = 'baby_' + this.getRandomID();
     const mystr = '<div id=' + id + ' class="baby"></div>';
-    // pageElement.innerHTML += mystr;
-    // const newQuestionEle = document.getElementById(id);
-    this.renderer.appendChild(pageElement, componentRef.location.nativeElement);
-    // newQuestionEle.style.position = 'relative';
-    // newQuestionEle.style.top = this.currentYPos + 'px';
-    // this.renderer.setAttribute(componentRef.location.nativeElement, 'style', 'position:relative; top:' + this.currentYPos + 'px');
-    // insert a line break after component
+    pageElement.innerHTML += mystr;
+    const newQuestionEle = document.getElementById(id);
+    this.renderer.appendChild(newQuestionEle, componentRef.location.nativeElement);
+    //this.renderer.appendChild(pageElement, componentRef.location.nativeElement);    
+    newQuestionEle.setAttribute('style', 'position:absolute; top:' + this.currentYPos + 'px');
     const str = '</br>';
-    //pageElement.innerHTML += str;
   }
 
   contentOnClick(e: any): void{
-    console.log("yPos--", e.target.getBoundingClientRect().y);
-    this.currentYPos = e.target.getBoundingClientRect().y;
+    
+      const rect = e.target.getBoundingClientRect();
+      const x = e.clientX - rect.left; //x position within the element.
+      const y = e.clientY - rect.top;  //y position within the element.
+      this.currentYPos = y;
+      console.log("y--->>", y);
+      let selection = window.getSelection();
+      //console.log("selection = window.getSelection()", selection.focusNode.childNodes.item);
+  
+      console.log("target--",e.target.childNodes)
+
   }
+
+  
+
 
   inputContent(e, char, i): void {
     console.log('this.pages', this.pages);
     const element = document.getElementById('content-' + i);
+    this.contentOnClick(e);
     if (e.keyCode === 13) {
       // e.preventDefault();
     }

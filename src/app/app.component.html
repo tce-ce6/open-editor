@@ -21,16 +21,17 @@
   [style.height]="sizePage.height + 'cm'"
   [style.width]="sizePage.width + 'cm'"
   (tap)="clickPage(i)">
+  <!-- (click)="contentOnClick($event)"> -->
   <!-- <button type="button" (click)="removePage(i)">remove</button> -->
     <div class="content" 
+      [id]="'content-' + i" contenteditable="true"
       [style.paddingTop]="paddingPage.top + 'cm'"
       [style.paddingRight]="paddingPage.right + 'cm'"
       [style.paddingBottom]="paddingPage.bottom + 'cm'"
       [style.paddingLeft]="paddingPage.left + 'cm'"  
-      [id]="'content-' + i" contenteditable="true"
-      (keypress)="inputContent($event, $event['data'], i)"
       (input)="inputContent($event, $event['data'], i)"
-      (click)="contentOnClick($event)">
+      (keyup)="contentOnClick($event)"
+      (click)="contentOnClick($event)"> 
       
         <!-- <app-qptitle></app-qptitle>    -->
       <br>
