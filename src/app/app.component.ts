@@ -153,12 +153,16 @@ export class AppComponent implements OnInit, AfterViewInit {
       const rect = e.target.getBoundingClientRect();
       const x = e.clientX - rect.left; //x position within the element.
       const y = e.clientY - rect.top;  //y position within the element.
-      this.currentYPos = y;
-      console.log("y--->>", y);
+      
+      
       let selection = window.getSelection();
       //console.log("selection = window.getSelection()", selection.focusNode.childNodes.item);
-  
-      console.log("target--",e.target.childNodes)
+      const dd = selection.getRangeAt(0).startContainer.parentElement;
+      
+      const evaluatedTop = dd.offsetTop;
+      this.currentYPos = evaluatedTop;
+
+      console.log("Y POS-->>>", this.currentYPos);
 
   }
 
