@@ -38,6 +38,7 @@ export class AppComponent implements OnInit, AfterViewInit {
   pageScaleDisplay: any;
   pageScale = 1;
   isFitPage = false;
+  myfocusNode:any;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -146,31 +147,27 @@ export class AppComponent implements OnInit, AfterViewInit {
     //this.renderer.appendChild(pageElement, componentRef.location.nativeElement);    
     newQuestionEle.setAttribute('style', 'position:absolute; top:' + this.currentYPos + 'px');
     const str = '</br>';
+   
+    
   }
 
   contentOnClick(e: any): void{
-    
-      const rect = e.target.getBoundingClientRect();
-      const x = e.clientX - rect.left; //x position within the element.
-      const y = e.clientY - rect.top;  //y position within the element.
-      
-      
       let selection = window.getSelection();
-      //console.log("selection = window.getSelection()", selection.focusNode.childNodes.item);
-      const dd = selection.getRangeAt(0).startContainer.parentElement;
-      
-      const evaluatedTop = dd.offsetTop;
+      if(selection.focusNode.style !== undefined){
+        selection.focusNode.style.border = '1px solid transparent';
+      // this.myfocusNode = selection.focusNode;
+      const evaluatedTop = selection.focusNode.offsetTop;
       this.currentYPos = evaluatedTop;
 
+      }else{
+       let  dd = selection.getRangeAt(0).startContainer.parentElement;
+       const evaluatedTop = dd.offsetTop;
+       this.currentYPos = evaluatedTop;
+      }
       console.log("Y POS-->>>", this.currentYPos);
-
   }
-
-  
-
-
   inputContent(e, char, i): void {
-    console.log('this.pages', this.pages);
+    // console.log('this.pages', this.pages);
     const element = document.getElementById('content-' + i);
     this.contentOnClick(e);
     if (e.keyCode === 13) {
